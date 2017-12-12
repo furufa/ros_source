@@ -1,0 +1,38 @@
+#include <ros/ros.h>
+#include <string>
+#include <sensor_msgs/LaserScan.h>
+
+using namespace std;
+
+class UrgRosIcp
+{
+    public:
+        UrgRosIcp();
+        
+    private:
+        void urgnodeCallback(const sensor_msgs::LaserScan::ConstPtr& urg);
+
+        ros::NodeHandle nh_;
+        ros::Subscriber urgnode_sub_;
+
+};
+
+UrgRosIcp::UrgRosIcp()
+{
+    urgnode_sub_ = nh_.subscribe<sensor_msgs::LaserScan>("namadata", 20, &UrgRosIcp::urgnodeCallback, this);
+}
+
+void UrgRosIcp::urgnodeCallback(const sensor_msgs::LaserScan::ConstPtr& urg)
+{
+    sensor_msgs::LaserScan media_urg;
+    media_urg = *urg;
+    cout << media_urg << endl;
+
+}
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "ros_urg_icp");
+    UrgRosIcp ros_urg_icp;
+
+    ros::spin();
+}
